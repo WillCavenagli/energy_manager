@@ -37,7 +37,9 @@ uint32_t configuraPorts()
 uint32_t inicializaDisplay()
 {
 
-  /*
+  /* CONFIG DISPLAY - 8 BITS
+
+
     RS  RW  D7  D6  D5  D4  D3  D2  D1  D0
 
     delay
