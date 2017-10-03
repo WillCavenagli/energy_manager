@@ -37,18 +37,52 @@ uint32_t configuraPorts()
 uint32_t inicializaDisplay()
 {
 
-    delay(80000); //20ms
+  /*
+    RS  RW  D7  D6  D5  D4  D3  D2  D1  D0
+
+    delay
+
+    0   0   0   0   1   1   *   *   *   *
+
+    pulso Enable
+
+    delay
+
+    pulso Enable
+
+    delay
+
+    pulso Enable
+
+    0   0   0   0   1   1   N   F   *   *   ---> N=1(2 linhas) F=0(5x7)
+
+    pulso Enable
+
+    0   0   0   0   0   0   1   0   0   0
+
+    pulso Enable
+
+    0   0   0   0   0   0   0   0   0   1
+
+    pulso Enable
+
+    0   0   0   0   0   0   0   1  I/D  S   ---> I/D=1 (Para direita)  S=0 (Mensagem não desloca)
+
+    pulso Enable
+  */
+
+    delay(1000000); //
 
     GPIO_PORTA_DATA_R = 0b00110000;
     GPIO_PORTE_DATA_R = 0;
 
     pulsoEnable();
 
-    delay(80000); //10ms
+    delay(1000000); //
 
     pulsoEnable();
 
-    delay(80000); //300us
+    delay(1000000); //
 
     pulsoEnable();
 
