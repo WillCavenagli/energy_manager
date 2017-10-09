@@ -11,11 +11,142 @@ uint32_t delay(uint32_t valor)
 
 uint32_t pulsoEnable()
 {
-
+    delay(10000);
     GPIO_PORTE_DATA_R ^= 0b00010000;
+    delay(10000);
     GPIO_PORTE_DATA_R ^= 0b00010000;
-
+    delay(10000);
     return 0;
+}
+
+void limpaDisplay()
+{
+    delay(10000);
+    GPIO_PORTE_DATA_R = 0b00000010;
+    GPIO_PORTA_DATA_R = 0b00000000;
+    pulsoEnable();
+}
+
+void textoPerfil()
+{
+    delay(10000);
+    GPIO_PORTE_DATA_R = 0;
+    GPIO_PORTA_DATA_R = 0b00001100;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00000100;
+    GPIO_PORTA_DATA_R = 0b00001100;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00000010;
+    GPIO_PORTA_DATA_R = 0b00001100;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00000100;
+    GPIO_PORTA_DATA_R = 0b00000100;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001000; //P
+    GPIO_PORTA_DATA_R = 0b01010000;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001010; //E
+    GPIO_PORTA_DATA_R = 0b01000100;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001100; //R
+    GPIO_PORTA_DATA_R = 0b01010000;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001100; //F
+    GPIO_PORTA_DATA_R = 0b01000100;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001010; //I
+    GPIO_PORTA_DATA_R = 0b01001000;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001000; //L
+    GPIO_PORTA_DATA_R = 0b01001100;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001100; //:
+    GPIO_PORTA_DATA_R = 0b00111000;
+    pulsoEnable();
+}
+
+void textoPotencia()
+{
+    delay(10000);
+    GPIO_PORTE_DATA_R = 0b00000000; //Posiciona na segunda linha
+    GPIO_PORTA_DATA_R = 0b11000000;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001000; //P
+    GPIO_PORTA_DATA_R = 0b01010000;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001110; //O
+    GPIO_PORTA_DATA_R = 0b01001100;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001000; //T
+    GPIO_PORTA_DATA_R = 0b01010100;
+    pulsoEnable();
+    GPIO_PORTE_DATA_R = 0b00001100; //:
+    GPIO_PORTA_DATA_R = 0b00111000;
+    pulsoEnable();
+}
+
+void textoAdicionaNumPerfil(uint32_t valor)
+{
+    delay(10000);
+    GPIO_PORTE_DATA_R = 0b00000000; //Posiciona no local
+    GPIO_PORTA_DATA_R = 0b10001000;
+    pulsoEnable();
+
+    switch (valor)
+    {
+    case 1:
+        GPIO_PORTE_DATA_R = 0b00001000; //0
+        GPIO_PORTA_DATA_R = 0b00110000;
+        pulsoEnable();
+        GPIO_PORTE_DATA_R = 0b00001010; //1
+        GPIO_PORTA_DATA_R = 0b00110000;
+        pulsoEnable();
+        break;
+
+    case 2:
+        GPIO_PORTE_DATA_R = 0b00001000; //0
+        GPIO_PORTA_DATA_R = 0b01110000;
+        pulsoEnable();
+        GPIO_PORTE_DATA_R = 0b00001100; //2
+        GPIO_PORTA_DATA_R = 0b00110000;
+        pulsoEnable();
+        break;
+    default:
+        break;
+    }
+
+}
+
+void textoAdicionaValorPotencia(uint32_t valor)
+{
+    delay(10000);
+    GPIO_PORTE_DATA_R = 0b00000010; //Posiciona no local
+    GPIO_PORTA_DATA_R = 0b11000100;
+    pulsoEnable();
+
+    switch (valor)
+    {
+    case 1:
+        GPIO_PORTE_DATA_R = 0b00001000; //0
+        GPIO_PORTA_DATA_R = 0b00110000;
+        pulsoEnable();
+        GPIO_PORTE_DATA_R = 0b00001010; //1
+        GPIO_PORTA_DATA_R = 0b00110000;
+        pulsoEnable();
+        break;
+
+    case 2:
+        GPIO_PORTE_DATA_R = 0b00001000; //0
+        GPIO_PORTA_DATA_R = 0b01110000;
+        pulsoEnable();
+        GPIO_PORTE_DATA_R = 0b00001100; //2
+        GPIO_PORTA_DATA_R = 0b00110000;
+        pulsoEnable();
+        break;
+    default:
+        break;
+    }
+
 }
 
 uint32_t configuraPorts()
@@ -36,48 +167,13 @@ uint32_t configuraPorts()
 
 uint32_t inicializaDisplay()
 {
-
-  /* CONFIG DISPLAY - 8 BITS
-
-
-    RS  RW  D7  D6  D5  D4  D3  D2  D1  D0
-
-    delay
-
-    0   0   0   0   1   1   *   *   *   *
-
-    pulso Enable
-
-    delay
-
-    pulso Enable
-
-    delay
-
-    pulso Enable
-
-    0   0   0   0   1   1   N   F   *   *   ---> N=1(2 linhas) F=0(5x7)
-
-    pulso Enable
-
-    0   0   0   0   0   0   1   0   0   0
-
-    pulso Enable
-
-    0   0   0   0   0   0   0   0   0   1
-
-    pulso Enable
-
-    0   0   0   0   0   0   0   1  I/D  S   ---> I/D=1 (Para direita)  S=0 (Mensagem não desloca)
-
-    pulso Enable
-  */
-
     delay(1000000); //
 
     GPIO_PORTA_DATA_R = 0b00110000;
+    delay(10000);
     GPIO_PORTE_DATA_R = 0;
 
+    delay(10000);
     pulsoEnable();
 
     delay(1000000); //
@@ -90,42 +186,53 @@ uint32_t inicializaDisplay()
 
     //********* AJUSTA O MODO DE UTILIZAÇÃO DO DISPLAY *********
 
-    GPIO_PORTA_DATA_R = 0b00110000; //N=0 (1 Linha) & F=0 (5x7)
+    delay(10000);
+    GPIO_PORTA_DATA_R = 0b00111000; //N=0 (1 Linha) & F=0 (5x7)
+    delay(10000);
     GPIO_PORTE_DATA_R = 0;
 
+    delay(10000);
     pulsoEnable();
 
     //**********************************************************
 
     //*************** DESLIGA O DISPLAY ************************
 
+    delay(10000);
     GPIO_PORTA_DATA_R = 0b00001000;
+    delay(10000);
     GPIO_PORTE_DATA_R = 0;
 
+    delay(10000);
     pulsoEnable();
 
     //***********************************************************
 
     //******************** LIMPA O DISPLAY **********************
 
+    delay(10000);
     GPIO_PORTA_DATA_R = 0b00000000;
     GPIO_PORTE_DATA_R = 0b00000010;
 
+    delay(10000);
     pulsoEnable();
 
     //***********************************************************
 
     //******** AJUSTA O MODO DE FUNCIONAMENTO DO CURSOR *********
 
+    delay(10000);
     GPIO_PORTA_DATA_R = 0b00000100; //I-D=1 (Cursor p/ esquerda) & S=0 (Mensagem não desloca)
+    delay(10000);
     GPIO_PORTE_DATA_R = 0b00000100;
+    delay(10000);
 
     pulsoEnable();
 
     return 0;
 }
 
-/* Monstagem do display no Tiva
+/* Montagem do display no Tiva
  *
  * PE1  -  DB0    Pino7 -
  * PE2  -  DB1    Pino8 -
@@ -148,6 +255,10 @@ int main(void)
 
     inicializaDisplay();
 
+    limpaDisplay();
+    textoPerfil();
+    textoPotencia();
+    textoAdicionaNumPerfil(1);
     while (1)
     {
         __asm("WFI");
